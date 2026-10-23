@@ -34,6 +34,8 @@ describe('release configuration guards', () => {
   it('is Android-only and has a package id and an increasing-capable version code', () => {
     expect(appJson.platforms).toEqual(['android']);
     expect(appJson.android.package).toMatch(/^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+$/);
+    // The final Play application ID. It cannot change after the first upload.
+    expect(appJson.android.package).toBe('in.satvikpatel.scamlens');
     expect(Number.isInteger(appJson.android.versionCode)).toBe(true);
   });
 

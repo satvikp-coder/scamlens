@@ -32,6 +32,11 @@ All notable implementation milestones. Version numbers follow `app.json`.
 - Windows 260-character path limit in native C++ builds solved with `scripts/build-android.ps1` (builds from `C:\s`), a short CMake staging directory, and excluding the unused reanimated / worklets / gesture-handler native code (their absence from the JS bundle was checked).
 - WCAG AA contrast test added; Play listing graphics inspected.
 
+### Final application ID and release signing (2026-10-24)
+- Application ID set to `in.satvikpatel.scamlens` (was the provisional `com.scamlens.app`); pinned by a test.
+- Upload keystore created outside the repository; release builds are signed with it; `scripts/build-android.ps1` refuses to build without it unless `-AllowDebugSigning` is passed.
+- APK and AAB rebuilt and verified (package, signer, SDK levels, permissions).
+
 ### Bugs found and fixed during development
 - History `add` used a stale list, so two quick saves could overwrite each other (found by a test; fixed with a ref).
 - A link's `user:password@` part could have been copied into history parameters (fixed; covered by a test).

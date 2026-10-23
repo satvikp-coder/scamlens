@@ -8,7 +8,7 @@ Built with JDK 17 via `scripts/build-android.ps1` (`assembleRelease`, ABIs arm64
 
 | Fact | Value | Tool |
 |---|---|---|
-| Package | `com.scamlens.app` (**provisional**) | `aapt2 dump badging` |
+| Package | `com.scamlens.app` (**old provisional ID; superseded, see section 5**) | `aapt2 dump badging` |
 | versionCode / versionName | 1 / 0.1.0 | aapt2 |
 | minSdk / targetSdk / compileSdk | 24 / **36** / 37 | aapt2 + RN defaults (Play's current floor is 36, see `docs/GOOGLE_PLAY_RELEASE.md`) |
 | Size | 47 MB (two ABIs; an AAB delivers per-device splits) | file size |
@@ -74,3 +74,26 @@ No findings from the manifest, permissions, native-libs (including 16 KB alignme
 2. A real upload keystore and a signed AAB.
 3. Final application ID decision.
 4. Everything in `docs/GOOGLE_PLAY_RELEASE.md` section 6.
+
+## 5. Final release build (2026-10-24, application ID `in.satvikpatel.scamlens`)
+
+The ID was changed from the provisional `com.scamlens.app` to **`in.satvikpatel.scamlens`**. Sections 1-4 above describe the earlier, debug-signed builds under the old ID. Both artifacts were rebuilt from scratch with `scripts/build-android.ps1 -Task both` (JDK 17, 22 min 47 s, four ABIs) and **signed with the upload key**.
+
+| Fact | APK (`app-release.apk`, 80 MB) | AAB (`app-release.aab`, 54 MB) | Tool |
+|---|---|---|---|
+| Package | `in.satvikpatel.scamlens` | `in.satvikpatel.scamlens` (base manifest; 0 occurrences of the old ID) | aapt2, direct inspection |
+| versionCode / versionName | 1 / 0.1.0 | 1 / 0.1.0 | aapt2 |
+| targetSdk | 36 | 36 | aapt2 |
+| Native code | arm64-v8a, armeabi-v7a, x86, x86_64 | same | aapt2 |
+| Signer | `CN=ScamLens Upload Key, O=ScamLens, C=IN` | same | apksigner, keytool |
+| Certificate SHA-256 | `0F:73:41:C3:27:F5:18:77:97:15:82:36:0D:B9:10:BD:0A:94:BC:C3:2E:B4:50:80:3E:F9:EC:6D:43:6E:AB:62` | same | keytool |
+| Signature algorithm | SHA256withRSA | SHA256withRSA | keytool |
+| Debug-signed? | **No** | **No** | |
+
+Permissions are unchanged: the only entry is the app-private `in.satvikpatel.scamlens.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`; no INTERNET.
+
+`gplay preflight` (all 9 scanners): AAB has 1 error (`screenshot_count`: store-listing screenshots missing; not a blocker for uploading the bundle) and the benign `app-metadata.properties` warning explained in section 2. APK: info only (`upload_format`).
+
+Tests, type-check and lint were re-run after the change: 173 of 173 tests pass.
+
+The **AAB is the file to upload** to Play Console ("Upload app bundles" / "Drop app bundles here to upload"). The APK is for testing on phones; Play does not accept APKs for new apps.

@@ -6,7 +6,7 @@
 
 | Decision | Current state |
 |---|---|
-| **Application ID** | `com.scamlens.app` is a **provisional** value in `app.json`. It cannot be changed after the first upload to Play. Pick the final ID (usually a reverse domain you control, e.g. `in.yourdomain.scamlens`) **before** the first upload. Availability can only be confirmed in Play Console. |
+| **Application ID** | **`in.satvikpatel.scamlens`** (decided by the owner on 2026-10-24; set in `app.json`, pinned by a test). It cannot be changed after the first upload to Play. Availability can only be confirmed in Play Console. |
 | Developer account | Needs a Google Play Console account (one-time fee, identity verification). Personal vs organisation changes the testing rules below. |
 | Licence for the source code | Not chosen (see README). |
 | Real support email / privacy-policy URL | Not available; `src/config.ts` is `null`. Never ship invented ones. |
@@ -22,7 +22,7 @@
 
 Signing keys must **never** be in this repo or in chat.
 
-1. Create an **upload keystore** once (keep it and its passwords in a password manager, and make an offline backup):
+1. **Done on the development machine (2026-10-24):** an upload keystore was created at `C:\Users\satvi\secure\scamlens-upload.keystore` (alias `scamlens-upload`, PKCS12, RSA 2048, valid 25 years) and its four settings were written to `%USERPROFILE%\.gradle\gradle.properties`. **You must back up the keystore file AND the passwords in that gradle.properties file** (password manager plus an offline copy). If you lose them you must ask Google to reset the upload key. Certificate SHA-256: `0F:73:41:C3:27:F5:18:77:97:15:82:36:0D:B9:10:BD:0A:94:BC:C3:2E:B4:50:80:3E:F9:EC:6D:43:6E:AB:62`. To create a different key instead (keep it and its passwords in a password manager, and make an offline backup):
    ```bash
    keytool -genkeypair -v -storetype PKCS12 -keystore scamlens-upload.keystore \
      -alias scamlens-upload -keyalg RSA -keysize 2048 -validity 10000
@@ -36,12 +36,12 @@ Signing keys must **never** be in this repo or in chat.
    SCAMLENS_UPLOAD_KEY_PASSWORD=...
    ```
    The config plugin `plugins/with-release-signing.js` reads these and signs the release build with that key. If they are absent the build falls back to the debug key (fine for testing, **never** upload it).
-3. Use JDK 17 (see README), then:
-   ```bash
-   npx expo prebuild --platform android --clean
-   cd android
-   ./gradlew bundleRelease          # android/app/build/outputs/bundle/release/app-release.aab
+3. Use JDK 17 (see README), then on Windows:
+   ```powershell
+   .\scripts\build-android.ps1 -Task both -Architectures "armeabi-v7a,arm64-v8a,x86,x86_64"
+   # build-output\app-release.aab = the file to upload;  build-output\app-release.apk = for testing on phones
    ```
+   The script **refuses to build** if the upload key is not configured (unless you pass `-AllowDebugSigning` for a test-only build). On macOS/Linux: `npx expo prebuild --platform android --clean && cd android && ./gradlew bundleRelease`.
 4. Bump `android.versionCode` in `app.json` for every upload (must increase each time) and update `version` for user-visible versions.
 5. Play App Signing: on first upload choose Google-managed app signing (recommended). Your keystore is then the **upload** key; Google holds the app-signing key.
 

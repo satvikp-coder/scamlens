@@ -9,7 +9,7 @@ Status legend: **V** implemented and verified · **I** implemented, not fully ve
 | Area | State |
 |---|---|
 | Automated checks | typecheck clean, ESLint clean, **173 tests in 7 suites pass** (run after the final change; see §11) |
-| Android build | **Test APK built** (JDK 17, 47 MB, debug-signed) and a **debug-signed AAB built** (54 MB, all 4 ABIs). Both verified with `aapt2`/`apksigner`/`keytool`/`gplay preflight`. The AAB is not uploadable (needs your keystore). |
+| Android build | **Release-signed APK (80 MB, 4 ABIs) and AAB (54 MB)** built with JDK 17 under the final ID `in.satvikpatel.scamlens`, signed with the upload key; verified with `aapt2`/`apksigner`/`keytool`/`gplay preflight`. Not uploaded. |
 | Real-device testing | **B: not done.** No phone, emulator or system image in the environment. This is the **last step and is yours** (checklist in `docs/TESTING.md`). |
 | Google Play | drafts and checks only. Developer account, final application ID, upload key, privacy-policy URL, screenshots and all declarations are open owner steps (§13). |
 
@@ -128,7 +128,7 @@ Status legend: **V** implemented and verified · **I** implemented, not fully ve
 | Item | Status | Evidence / what is left |
 |---|---|---|
 | App name | V | ScamLens |
-| Application ID | **B** | `com.scamlens.app` is provisional; **needs your decision before the first upload** (cannot change later) |
+| Application ID | V | `in.satvikpatel.scamlens` (owner's decision, 2026-10-24). Verified in the built APK (`aapt2`) and the AAB manifest; 0 occurrences of the old ID in the bundle |
 | Version name/code | V | 0.1.0 / 1 |
 | Icon, adaptive + monochrome icons, splash | V | generated and inspected (`assets/images`) |
 | Title, short and full descriptions (en/hi/gu) | I | within limits (preflight `metadata` ran); Hindi/Gujarati need native review |
@@ -142,7 +142,7 @@ Status legend: **V** implemented and verified · **I** implemented, not fully ve
 | Release notes | V | `docs/play/RELEASE_NOTES.md` |
 | Signed AAB build instructions | V | `GOOGLE_PLAY_RELEASE.md` §2 + `plugins/with-release-signing.js` |
 | AAB build | V | `bundleRelease` succeeds; preflight on the AAB: one expected error (screenshots) + one benign AGP-metadata warning (inspected) |
-| **Signed AAB (uploadable)** | **B** | requires your upload keystore; none created (it must be yours and stay off this machine's repo). The AAB built here is debug-signed |
+| **Release-signed AAB** | V | `build-output/app-release.aab`, signed with the upload key `CN=ScamLens Upload Key` (SHA256withRSA; SHA-256 `0F:73:41:C3:...:6E:AB:62`), not the debug key. Not uploaded. The keystore lives outside the repo; **the owner must back it up** |
 | Preflight (offline) | V | all 9 scanners ran; one expected error (screenshots) |
 | Policy insights audit | V | 🟢 compliant, advisory only |
 | Internal / closed testing checklist, production checklist | V | `GOOGLE_PLAY_RELEASE.md` §5 |
@@ -168,8 +168,8 @@ All stages were followed in order except that **Stage 5/6 verification on a devi
 | 5 | Tests + evaluation dataset | V |
 | 6 | Privacy/permission audit | V |
 | 7 | Docs | V |
-| 8 | Debug build / installable APK | V `build-output/app-release.apk` (gitignored; debug-signed; not for Play) |
-| 9 | Signed AAB | **B** (needs your keystore); a debug-signed AAB exists for pipeline verification only |
+| 8 | Installable APK | V `build-output/app-release.apk` (gitignored; now release-signed with the upload key; for phone testing, not for new Play apps) |
+| 9 | Signed AAB | V release-signed with the upload key (not uploaded) |
 | 10 | Play listing drafts | V/P as above |
 | 11 | Commands | README |
 | 12 | This audit | V |
@@ -177,9 +177,9 @@ All stages were followed in order except that **Stage 5/6 verification on a devi
 
 ## Manual steps left for you (in this order)
 
-1. Decide the final **application ID**, the **licence**, and who the developer/contact is.
+1. Decide the **licence** and who the developer/contact is. (The application ID is decided: `in.satvikpatel.scamlens`.)
 2. Have **native Hindi and Gujarati speakers** review translations, patterns and the listing text.
-3. Create the **upload keystore**, back it up, build the signed AAB (`GOOGLE_PLAY_RELEASE.md` §2).
+3. **Back up the upload keystore** (`C:\Users\satvi\secure\scamlens-upload.keystore`) **and** the passwords in `%USERPROFILE%\.gradle\gradle.properties`. The signed AAB already exists.
 4. Create the Play Console account/app, host the privacy policy, fill Data safety / content rating / audience declarations yourself.
 5. **Capture screenshots** from the app and add them to the listing.
 6. **Manual testing on your Android phone: do this last, before uploading** (checklist in `docs/TESTING.md`).

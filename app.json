@@ -11,7 +11,7 @@
       "android"
     ],
     "android": {
-      "package": "com.scamlens.app",
+      "package": "in.satvikpatel.scamlens",
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#0B5CAD",

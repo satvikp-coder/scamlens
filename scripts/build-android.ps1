@@ -18,8 +18,10 @@
 #>
 param(
   [string]$Work = 'C:\s',
-  [ValidateSet('assembleRelease', 'bundleRelease')]
+  [ValidateSet('assembleRelease', 'bundleRelease', 'both')]
   [string]$Task = 'assembleRelease',
+  # Refuse to build if the upload key is not configured (default: required for bundle builds).
+  [switch]$AllowDebugSigning,
   [string]$Architectures = 'arm64-v8a,x86_64'
 )
 
@@ -37,7 +39,18 @@ $env:Path = "$env:JAVA_HOME\bin;$env:Path"
 # Keep the C++ build folder path short (see plugins/with-release-signing.js).
 $env:SCAMLENS_CXX_DIR = 'C:\c'
 
+# Release builds must be signed with the upload key (see plugins/with-release-signing.js).
+$userGradle = Join-Path $env:USERPROFILE '.gradle\gradle.properties'
+$hasKey = (Test-Path $userGradle) -and (Select-String -Path $userGradle -Pattern '^SCAMLENS_UPLOAD_STORE_FILE=' -Quiet)
+if ($hasKey) {
+  $keyFile = ((Select-String -Path $userGradle -Pattern '^SCAMLENS_UPLOAD_STORE_FILE=(.*)$').Matches[0].Groups[1].Value).Trim()
+  if (-not (Test-Path $keyFile)) { throw "Upload keystore not found: $keyFile" }
+} elseif (-not $AllowDebugSigning) {
+  throw 'No upload key configured (SCAMLENS_UPLOAD_STORE_FILE in ~/.gradle/gradle.properties). Configure it, or pass -AllowDebugSigning for a test-only build.'
+}
+
 Write-Host "Copying source to $Work ..."
+
 New-Item -ItemType Directory -Force $Work | Out-Null
 robocopy $src $Work /MIR /XD node_modules android ios .git .expo .cxx build dist build-output /XF *.log /NFL /NDL /NJH /NJS /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "robocopy failed ($LASTEXITCODE)" }
@@ -49,7 +62,8 @@ try {
   if ($LASTEXITCODE) { throw 'expo prebuild failed' }
   Push-Location android
   try {
-    .\gradlew.bat $Task "-PreactNativeArchitectures=$Architectures"
+    $tasks = if ($Task -eq 'both') { @('assembleRelease', 'bundleRelease') } else { @($Task) }
+    .\gradlew.bat @tasks "-PreactNativeArchitectures=$Architectures"
     if ($LASTEXITCODE) { throw "Gradle $Task failed" }
   } finally { Pop-Location }
 } finally { Pop-Location }
