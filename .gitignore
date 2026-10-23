@@ -59,3 +59,4 @@ google-services.json
 build-output/
 dist-check/
 dist-js/
+.scratch/

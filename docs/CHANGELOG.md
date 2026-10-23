@@ -26,6 +26,12 @@ All notable implementation milestones. Version numbers follow `app.json`.
 - App icon, adaptive/monochrome icons, splash image and Play graphics generated.
 - Play listing drafts (en/hi/gu), privacy-policy draft, Data safety draft, content-rating guidance, licence inventory.
 
+### Build and release verification
+- Test APK (47 MB) and debug-signed AAB (54 MB, 4 ABIs) built with JDK 17; merged manifest, signature, SDK levels and permissions verified with `aapt2`, `apksigner`, `keytool`.
+- `gplay preflight` (all 9 scanners), `play-policy-insights` and `expo-doctor` run; results in `docs/play/`.
+- Windows 260-character path limit in native C++ builds solved with `scripts/build-android.ps1` (builds from `C:\s`), a short CMake staging directory, and excluding the unused reanimated / worklets / gesture-handler native code (their absence from the JS bundle was checked).
+- WCAG AA contrast test added; Play listing graphics inspected.
+
 ### Bugs found and fixed during development
 - History `add` used a stale list, so two quick saves could overwrite each other (found by a test; fixed with a ref).
 - A link's `user:password@` part could have been copied into history parameters (fixed; covered by a test).

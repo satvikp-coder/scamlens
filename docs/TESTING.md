@@ -5,11 +5,12 @@
 ```bash
 npm run typecheck    # tsc --noEmit (strict)
 npm run lint         # expo lint (ESLint, expo config + React hooks/compiler rules)
+npx expo-doctor      # Expo dependency-compatibility check (20/20 passed on 2026-10-23)
 npm test             # Jest (jest-expo): all suites below
 npm run evaluate     # runs the labelled dataset and rewrites docs/EVALUATION.md
 ```
 
-## What the automated suite covers (last run: 6 suites, 139 tests, all passing)
+## What the automated suite covers (last run: 7 suites, 173 tests, all passing)
 
 | Suite | Tests | What it checks |
 |---|---|---|
@@ -18,6 +19,7 @@ npm run evaluate     # runs the labelled dataset and rewrites docs/EVALUATION.md
 | `src/i18n/i18n.test.ts` | 16 | Hindi and Gujarati have every English key, no empty strings, identical `{placeholders}` and bullet-line counts, correct scripts; every finding id has title + explanation; every lesson/practice item has text; **input → engine → localized text** for English, Hindi and Gujarati without leftover placeholders; private text never appears in the share summary |
 | `src/state/history.test.tsx` | 11 | history saves a compact summary without the user's text; strips a link's `user:password@`; saves original text only when enabled; nothing saved when history is off; delete one; **clear really removes the stored key**; settings + history survive a restart (unmount/mount); failed save and failed delete are reported; corrupt stored data is ignored; entry cap |
 | `src/components/result-flow.test.tsx` | 5 | renders the real result screen from engine output: level, summary, evidence quote, explanation, action, limits and disclaimer; "no findings" is never called safe; vague input → "Unable to assess"; language change (en → hi → gu) updates the screen immediately; "Check another" callback |
+| `src/theme/contrast.test.ts` | 34 | WCAG AA (4.5:1) contrast for every text/background pair and every risk-level badge, in the light and dark palettes |
 | `src/release-config.test.ts` | 6 | no invented contact details; INTERNET/storage/overlay/vibrate permissions are blocked; backup disabled; Android-only; no analytics/ads/networking libraries in `package.json`; no keystore/env/service-account files in the project root |
 
 Bugs these tests caught during development are listed in `docs/CHANGELOG.md`.
