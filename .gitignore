@@ -41,3 +41,21 @@ example
 # generated native folders
 /ios
 /android
+
+# Secrets and signing material: never commit these
+*.keystore
+*.pem
+*.pfx
+*.ppk
+.env
+.env.*
+!.env.example
+local.properties
+service-account*.json
+*-service-account*.json
+google-services.json
+/ios
+/.tmp
+build-output/
+dist-check/
+dist-js/

@@ -1,0 +1,36 @@
+Got a message that asks you to pay a fee, share an OTP, click a link or accept a job? ScamLens helps you understand it before you act.
+
+Paste a message or a link. ScamLens shows:
+• the warning signs it found, with the exact words or link parts that triggered each one
+• why each sign matters, in plain language
+• safe next steps, such as what not to click, pay or share
+• honest limits: what it cannot tell you
+
+Built for common scams in India:
+• fake parcel and delivery-fee messages
+• OTP, PIN and account-verification requests
+• UPI payment-request and QR-code tricks
+• fake job and work-from-home offers
+• look-alike bank, government and shopping links
+• remote-access app and fake support scams
+
+PRIVATE BY DESIGN
+• Checks run on your phone. Your messages and links are not sent anywhere.
+• The app has no Internet permission, no account, no ads and no analytics.
+• It never opens the links you check; it only reads the address.
+• It does not read your SMS, contacts, call log or notifications. You paste what you want checked.
+• Optional history is stored only on your phone. Delete one entry or everything at any time.
+
+CLEAR, NOT MYSTERIOUS
+ScamLens uses fixed, published rules, not a hidden AI. Results are "Low apparent risk", "Caution advised", "High risk" or "Unable to assess reliably". It never shows a made-up percentage and never says something is guaranteed safe.
+
+LEARN AND PRACTISE
+Short lessons on ten common scam patterns, with made-up examples, and a "Scam or not?" practice quiz.
+
+LANGUAGES
+English, हिन्दी (Hindi) and ગુજરાતી (Gujarati). Switch any time in Settings.
+
+IMPORTANT
+ScamLens is an educational helper based on warning signs. It can miss scams and it can raise false alarms. It does not replace checking with the real sender or your bank. If you have lost money to fraud in India, call 1930 or visit cybercrime.gov.in.
+
+ScamLens is an independent app. It is not affiliated with any bank, government body or delivery company.
