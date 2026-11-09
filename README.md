@@ -8,7 +8,7 @@
 
 > ScamLens is a heuristic helper. It can miss scams and can raise false alarms. It is not a substitute for checking with the real sender, your bank, or a professional. See [docs/DETECTION_ENGINE.md](docs/DETECTION_ENGINE.md#known-limitations).
 
-Status: **version 0.1.0, not published**. A local test build can be produced; nothing has been uploaded to Google Play. See [docs/GOOGLE_PLAY_RELEASE.md](docs/GOOGLE_PLAY_RELEASE.md) and [docs/FINAL_AUDIT.md](docs/FINAL_AUDIT.md).
+Status: **live on Google Play**: https://play.google.com/store/apps/details?id=in.satvikpatel.scamlens . Source is public for review; no licence has been chosen yet, so all rights are reserved.
 
 ## Features
 
